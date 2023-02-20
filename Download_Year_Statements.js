@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      0.1
 // @description  Adds a button to download all the years statements from translink
-// @author       Susan 
+// @author       Susan H
 // @match        https://translink.transfirst.com/content/MerchantReports/MerchantStatement.aspx*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=transfirst.com
 // @grant        none
