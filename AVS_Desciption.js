@@ -7,6 +7,7 @@
 // @match        https://translink.transfirst.com/content/MerchantReports/MerchantAuthorization.aspx*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=transfirst.com
 // @grant        none
+// @run-at document-end
 // ==/UserScript==
 
 (function () {
@@ -58,4 +59,19 @@
     };
 
     // Your code here...
+
+    for (const tr of Array.from(document.getElementById("dgAuthorization").children[0].children).slice(1, -1)) {
+        // base variables that will be used
+        let card_first_digit = tr.children[7].children[0].innerText[0];
+        let avs_td = tr.children[15];
+        let avs_code = avs_td.innerText;
+        let brand_avs_codes = avs_codes[card_first_digit];
+        // go through all auth entries and see if any have avs. If they do, add title attribute with meaning
+        if (brand_avs_codes) {
+            let avs_code_description = brand_avs_codes[avs_code];
+            if (avs_code_description) {
+                avs_td.title = avs_code_description;
+            } 
+        }
+    }
 })();
