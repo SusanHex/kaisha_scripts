@@ -58,7 +58,6 @@
         }
     };
 
-    // Your code here...
 
     for (const tr of Array.from(document.getElementById("dgAuthorization").children[0].children).slice(1, -1)) {
         // base variables that will be used
