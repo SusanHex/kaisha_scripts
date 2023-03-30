@@ -11,6 +11,20 @@
 
 (function() {
     'use strict';
+
+    window.fetchHtmlDocument = (URL) => {
+        let return_dom = Null; 
+        fetch(URL).then(function (response) {
+            return response.text();
+        }).then(function (HTML) {
+        
+            var parser = new DOMParser();
+            return_dom = parser.parseFromString(HTML, 'text/html');
+        }).catch(function (err) {
+            console.warn('Something went wrong.', err);
+        });
+        return return_dom;
+    }
     window.GM_xmlhttpRequest = GM_xmlhttpRequest
     window.checkIsSettled = () => {
     let authTable = document.getElementById("dgAuthorization");
