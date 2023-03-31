@@ -13,7 +13,10 @@
 (function() {
     'use strict';
     window.checkDocumentForAuth = (doc, auth_code) => {
-        const transaction_table = doc.getElementById("");
+        const transaction_table = doc.getElementById("dgTransDetail");
+
+        for (const tr of Array.from(transaction_table.children[0].children))
+
     }
     window.fetchHtmlDocument = async (URL) => { 
         return await fetch(URL).then(function (response) {
