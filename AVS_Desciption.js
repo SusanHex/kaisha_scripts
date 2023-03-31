@@ -59,7 +59,7 @@
     };
 
 
-    for (const tr of Array.from(document.getElementById("dgAuthorization").children[0].children).slice(1, -1)) {
+    for (const tr of Array.from(document.getElementById("dgAuthorization").children[0].children).slice(1)) {
         // base variables that will be used
         let card_first_digit = tr.children[7].children[0].innerText[0];
         let avs_td = tr.children[15];
