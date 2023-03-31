@@ -19,14 +19,14 @@
         }).then(function (HTML) {
         
             var parser = new DOMParser();
-            return_dom = parser.parseFromString(HTML, 'text/html');
+            return parser.parseFromString(HTML, 'text/html');
         }).catch(function (err) {
             console.warn('Something went wrong.', err);
         });
     }
-    window.checkIsSettled = () => {
+    window.checkIsSettled = async () => {
     let authTable = document.getElementById("dgAuthorization");
-    Array.from(authTable.children[0].children).slice(1).forEach(async (tr) => {
+    for (const tr of Array.from(authTable.children[0].children).slice(1)) {
         const auth_code = tr.children[12].innerText;
         if (auth_code) {
             const merchant_id = document.getElementById("ccMerchantSearchControl_Merchant_ID").value;
@@ -36,8 +36,8 @@
             detail_document = await fetchHtmlDocument(detail_url);
             console.log(detail_document);
         };
-    })
     }
+    };
 
     window.checkIsSettled();
     // Your code here...
