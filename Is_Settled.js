@@ -14,7 +14,7 @@
     'use strict';
 
     window.fetchHtmlDocument = (URL) => {
-        let return_dom = Null; 
+        let return_dom; 
         fetch(URL).then(function (response) {
             return response.text();
         }).then(function (HTML) {
@@ -29,9 +29,14 @@
     window.GM_xmlhttpRequest = GM_xmlhttpRequest
     window.checkIsSettled = () => {
     let authTable = document.getElementById("dgAuthorization");
-    Array.from(authTable.children[0].children).slice(1).forEach((elm) => {
-        console.log(elm);
+    Array.from(authTable.children[0].children).slice(1).forEach((tr) => {
+        const auth_code = tr.children[12].innerText;
+        if (auth_code) {
+            console.log(auth_code);
+        };
     })
     }
+
+    window.checkIsSettled();
     // Your code here...
 })();
