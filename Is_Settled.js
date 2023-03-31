@@ -28,6 +28,9 @@
     window.GM_xmlhttpRequest = GM_xmlhttpRequest
     window.checkIsSettled = () => {
     let authTable = document.getElementById("dgAuthorization");
+    Array(authTable.children[0].children).slice(1).forEach((elm) => {
+        console.log(elm);
+    })
     }
     // Your code here...
 })();
