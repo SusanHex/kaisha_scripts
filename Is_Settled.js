@@ -7,6 +7,7 @@
 // @match        https://translink.transfirst.com/content/MerchantReports/MerchantAuthorization.aspx*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=transfirst.com
 // @grant        GM_xmlhttpRequest
+// @downloadURL  https://github.com/SusanHex/kaisha_scripts/raw/production/Is_Settled.js
 // ==/UserScript==
 
 (function() {
@@ -28,7 +29,7 @@
     window.GM_xmlhttpRequest = GM_xmlhttpRequest
     window.checkIsSettled = () => {
     let authTable = document.getElementById("dgAuthorization");
-    Array(authTable.children[0].children).slice(1).forEach((elm) => {
+    Array.from(authTable.children[0].children).slice(1).forEach((elm) => {
         console.log(elm);
     })
     }
