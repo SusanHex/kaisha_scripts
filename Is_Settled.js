@@ -13,9 +13,8 @@
 (function() {
     'use strict';
 
-    window.fetchHtmlDocument = (URL) => {
-        let return_dom; 
-        fetch(URL).then(function (response) {
+    window.fetchHtmlDocument = async (URL) => { 
+        return await fetch(URL).then(function (response) {
             return response.text();
         }).then(function (HTML) {
         
@@ -24,19 +23,17 @@
         }).catch(function (err) {
             console.warn('Something went wrong.', err);
         });
-        return return_dom;
     }
-    window.GM_xmlhttpRequest = GM_xmlhttpRequest
     window.checkIsSettled = () => {
     let authTable = document.getElementById("dgAuthorization");
-    Array.from(authTable.children[0].children).slice(1).forEach((tr) => {
+    Array.from(authTable.children[0].children).slice(1).forEach(async (tr) => {
         const auth_code = tr.children[12].innerText;
         if (auth_code) {
             const merchant_id = document.getElementById("ccMerchantSearchControl_Merchant_ID").value;
             const token_card = tr.children[7].innerText;
             const detail_url = `https://translink.transfirst.com/Content/MerchantReports/MerchantCardActivity.aspx?sendingPage=MerchantAuthorization&detailMerchantID=${merchant_id}&detailSelectedCard=${token_card}`;
             console.log(merchant_id, auth_code, token_card, detail_url);
-            detail_document = fetchHtmlDocument(detail_url);
+            detail_document = await fetchHtmlDocument(detail_url);
             console.log(detail_document);
         };
     })
