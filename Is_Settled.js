@@ -12,7 +12,9 @@
 
 (function() {
     'use strict';
-
+    window.checkDocumentForAuth = (doc, auth_code) => {
+        const transaction_table = doc.getElementById("");
+    }
     window.fetchHtmlDocument = async (URL) => { 
         return await fetch(URL).then(function (response) {
             return response.text();
