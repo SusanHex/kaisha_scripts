@@ -36,6 +36,8 @@
             const token_card = tr.children[7].innerText;
             const detail_url = `https://translink.transfirst.com/Content/MerchantReports/MerchantCardActivity.aspx?sendingPage=MerchantAuthorization&detailMerchantID=${merchant_id}&detailSelectedCard=${token_card}`;
             console.log(merchant_id, auth_code, token_card, detail_url);
+            detail_document = fetchHtmlDocument(detail_url);
+            console.log(detail_document);
         };
     })
     }
