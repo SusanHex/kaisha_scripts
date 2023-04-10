@@ -14,10 +14,16 @@
     'use strict';
     window.checkDocumentForAuth = (doc, auth_code) => {
         const transaction_table = doc.getElementById("dgTransDetail");
-
-        for (const tr of Array.from(transaction_table.children[0].children))
-
+        if (transaction_table.children[0].children[0].class) {
+            for (const tr of Array.from(transaction_table.children[0].children)) {
+                
+            }
+        }
+        else {
+            return false;
+        }
     }
+
     window.fetchHtmlDocument = async (URL) => { 
         return await fetch(URL).then(function (response) {
             return response.text();
@@ -28,7 +34,7 @@
         }).catch(function (err) {
             console.warn('Something went wrong.', err);
         });
-    }
+    };
     window.checkIsSettled = async () => {
     let authTable = document.getElementById("dgAuthorization");
     for (const tr of Array.from(authTable.children[0].children).slice(1)) {
