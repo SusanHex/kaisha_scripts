@@ -14,15 +14,15 @@
     'use strict';
     window.checkDocumentForAuth = (doc, auth_code) => {
         const transaction_table = doc.getElementById("dgTransDetail");
-        if (transaction_table.children[0].children[0].class) {
+        if (transaction_table.innerText.includes("Search returned zero records.")) {
+            return false
+        }
+        else {
             for (const tr of Array.from(transaction_table.children[0].children)) {
-                if (auth_code === tr.children[5].innerText) {
+                if (auth_code === tr.children[10].innerText) {
                     return true;
                 }
             }
-        }
-        else {
-            return false;
         }
     }
 
