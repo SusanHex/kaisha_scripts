@@ -18,7 +18,7 @@
             return false
         }
         else {
-            for (const tr of Array.from(transaction_table.children[0].children)) {
+            for (const tr of Array.from(transaction_table.children[0].children).splice(1)) {
                 if (tr.children[10].innerText.includes(auth_code)) {
                     return true;
                 }
