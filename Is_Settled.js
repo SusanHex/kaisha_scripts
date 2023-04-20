@@ -50,7 +50,12 @@
             console.log(merchant_id, auth_code, token_card, detail_url);
             let detail_document = await fetchHtmlDocument(detail_url);
             let result = checkDocumentForAuth(detail_document, auth_code);
-            console.log(result);
+            if (result) {
+                auth_code_td.style.backgroundColor = "Green";
+            }
+            else {
+                auth_code_td.style.backgroundColor = "Red";
+            }
         };
     }
     };
