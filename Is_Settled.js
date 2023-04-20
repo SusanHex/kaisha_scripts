@@ -19,7 +19,7 @@
         }
         else {
             for (const tr of Array.from(transaction_table.children[0].children)) {
-                if (auth_code === tr.children[10].innerText) {
+                if (tr.children[10].innerText.includes(auth_code)) {
                     return true;
                 }
             }
@@ -48,7 +48,7 @@
             const detail_url = `https://translink.transfirst.com/Content/MerchantReports/MerchantCardActivity.aspx?sendingPage=MerchantAuthorization&detailMerchantID=${merchant_id}&detailSelectedCard=${token_card}`;
             console.log(merchant_id, auth_code, token_card, detail_url);
             let detail_document = await fetchHtmlDocument(detail_url);
-            let result = checkDocumentForAuth(detail_document);
+            let result = checkDocumentForAuth(detail_document, auth_code);
             console.log(result);
         };
     }
