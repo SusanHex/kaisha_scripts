@@ -7,6 +7,7 @@
 // @match        https://www.mreports.com/ac/authInquiry.do
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mreports.com
 // @grant        GM_setClipboard
+// @grant        GM_notification
 // ==/UserScript==
 
 (function() {
@@ -19,7 +20,8 @@
                 let el = e.target;
                 let auth_date = el.parentElement.children[12].innerText;
                 let auth_amount = el.parentElement.children[7].innerText;
-                let auth_num = el.parentElement.children[5].innerText.replace("-", "");
+                let auth_num = el.parentElement.children[5].innerText;
+                auth_num = auth_num.replaceAll("-", "");
                 let last_four = auth_num.slice(-4);
                 let cc_brand = "";
                 if (auth_num[0] === "6") {
@@ -35,6 +37,11 @@
                     cc_brand = "AM";
                 };
                 GM_setClipboard(`${auth_date} \$${auth_amount} ${cc_brand}#${last_four}`, "text", () => console.log("Coppied to clipboard"));
+                GM_notification({
+                    text: `${auth_date} \$${auth_amount} ${cc_brand}#${last_four}`,
+                    title: "Copied",
+                    },
+                );
             });
         };
     });
