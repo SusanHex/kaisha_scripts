@@ -1,0 +1,38 @@
+// ==UserScript==
+// @name         Is_Settled_v2
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  Finds what Authorizations have a corresponding batch
+// @author       Susan H
+// @match        https://translink.transfirst.com/content/MerchantReports/MerchantAuthorization.aspx*
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=transfirst.com
+// @grant        GM_xmlhttpRequest
+// @downloadURL  https://github.com/SusanHex/kaisha_scripts/raw/production/Is_Settled_v2.js
+// ==/UserScript==
+
+(function() {
+    'use strict';
+    const cardActivity = (merchant_id, token_card) => fetch(
+        `https://translink.transfirst.com/Content/MerchantReports/MerchantCardActivity.aspx?sendingPage=MerchantAuthorization&detailMerchantID=${merchant_id}&detailSelectedCard=${token_card}`
+    )
+    .then(onFulfilled, onRejected)
+    .catch(err => console.error('Error', err.message))
+
+    async function isSettled() {
+        let auth_table = document.getElementById("dgAuthorization");
+        const card_activity_promises = [];
+        for (const tr of Array.from(auth_table.children[0].children).slice(1)) {
+            let auth_code_td = tr.children[12]
+            const auth_code = auth_code_td.innerText;
+            if (auth_code) {
+                const merchant_id = document.getElementById("ccMerchantSearchControl_Merchant_ID").value;
+                const token_card = tr.children[7].innerText;
+                card_activity_promises.push(cardActivity(merchant_id, token_card));
+            }
+        }
+        const page_data = Promise.all([...card_activity_promises]);
+        console.log(page_data);
+    }
+
+    isSettled();
+})();
