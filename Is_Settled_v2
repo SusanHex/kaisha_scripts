@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Is_Settled_v2
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      1.0
 // @description  Finds what Authorizations have a corresponding batch
 // @author       Susan H
 // @match        https://translink.transfirst.com/content/MerchantReports/MerchantAuthorization.aspx*
@@ -12,7 +12,28 @@
 
 (async function() {
     'use strict';
-    const cardActivity = (merchant_id, token_card, approval_code ) => fetch(
+    window.SETTLE_TABLE = {};
+
+    function populateSettleTable() {
+        let auth_table = document.getElementById('dgAuthorization');
+        for (const tr of Array.from(auth_table.children[0].children).slice(1)) {
+            let auth_code_td = tr.children[12];
+            const auth_code = auth_code_td.innerText;
+            if (auth_code) {
+                const token_card = tr.children[7].innerText;
+                if(Object.keys(SETTLE_TABLE).includes(token_card)) {
+                    Object.assign(SETTLE_TABLE[token_card], {[auth_code]: auth_code_td});
+                } else {
+                    Object.assign(SETTLE_TABLE, {[token_card]: {
+                        [auth_code]: auth_code_td,
+                    }});
+                }
+            }
+        }
+    }
+
+
+    const cardActivity = (merchant_id, token_card) => fetch(
         `https://translink.transfirst.com/Content/MerchantReports/MerchantCardActivity.aspx?sendingPage=MerchantAuthorization&detailMerchantID=${merchant_id}&detailSelectedCard=${token_card}`
     ).then((resp) => {
         if (resp.ok) {
@@ -22,35 +43,29 @@
             return Promise.reject(`Error, Response: ${resp.statusText}`)
         }
     }).then((page_data) => {
-        return page_data.slice(page_data.indexOf('Transactions'), page_data.indexOf('Authorizations'));
+        const token_card = page_data.match(/(?<=detailSelectedCard\=)(\d+\.+\d+)/)[0];
+        console.log(token_card)
+        const page = page_data.slice(page_data.indexOf('Transactions'), page_data.indexOf('Authorizations'));
+        for (const approval_code of Object.keys(SETTLE_TABLE[token_card])) {
+            if (page.includes(approval_code)) {
+                SETTLE_TABLE[token_card][approval_code].style.backgroundColor = 'Green';
+            } else {
+                SETTLE_TABLE[token_card][approval_code].style.backgroundColor = 'Red';
+                SETTLE_TABLE[token_card][approval_code].innerText += '*';
+            }
+        }
+
+        return page
     });
 
     async function isSettled() {
-        let auth_table = document.getElementById('dgAuthorization');
-        const card_activity_promises = [];
-        const approval_codes = [];
         const merchant_id = document.getElementById('ccMerchantSearchControl_Merchant_ID').value;
-        for (const tr of Array.from(auth_table.children[0].children).slice(1)) {
-            let auth_code_td = tr.children[12]
-            const auth_code = auth_code_td.innerText;
-            if (auth_code) {
-                approval_codes.push([auth_code, auth_code_td]);
-                const token_card = tr.children[7].innerText;
-                card_activity_promises.push(cardActivity(merchant_id, token_card));
-            }
+        const promise_array = [];
+        for (const token_card of Object.keys(SETTLE_TABLE)) {
+            promise_array.push(cardActivity(merchant_id, token_card));
         }
-        const page_data = await Promise.all(card_activity_promises);
-        console.log(page_data);
-        for (const i in page_data) {
-            if(page_data[i].includes(approval_codes[i][0])) {
-                approval_codes[i][1].style.backgroundColor = 'Green';
-            }
-            else {
-                approval_codes[i][1].style.backgroundColor = 'red';
-                approval_codes[i][1] += '*';
-            }
-        }
+        await Promise.all(promise_array);
     }
-
+    populateSettleTable();
     await isSettled();
 })();
