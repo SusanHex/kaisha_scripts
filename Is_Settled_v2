@@ -6,7 +6,8 @@
 // @author       Susan H
 // @match        https://translink.transfirst.com/content/MerchantReports/MerchantAuthorization.aspx*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=transfirst.com
-// @grant        GM_xmlhttpRequest
+// @grant        GM_setClipboard
+// @grant        GM_notification
 // @downloadURL  https://github.com/SusanHex/kaisha_scripts/raw/production/Is_Settled_v2.js
 // ==/UserScript==
 
@@ -14,10 +15,38 @@
     'use strict';
     window.SETTLE_TABLE = {};
 
+    function copyInformation(click_event) {
+        let tr = click_event.target;
+        let auth_date = tr.parentElement.children[0].innerText.split(' ')[0];
+        let auth_amount = tr.parentElement.children[3].innerText;
+        let auth_num = tr.parentElement.children[7].innerText;
+        let last_four = auth_num.slice(-4);
+        let cc_brand = '';
+        if (auth_num[0] === '6') {
+            cc_brand = 'DS';
+        }
+        else if (auth_num[0] === '5') {
+            cc_brand = 'MC';
+        }
+        else if (auth_num[0] === '4') {
+            cc_brand = 'VS';
+        }
+        else if (auth_num[0] === '3') {
+            cc_brand = 'AM';
+        };
+        GM_setClipboard(`${auth_date} ${auth_amount} ${cc_brand}#${last_four}`, 'text', () => console.log('Coppied to clipboard'));
+        GM_notification({
+            text: `${auth_date} ${auth_amount} ${cc_brand}#${last_four}`,
+            title: 'Copied',
+            },
+        );
+    }
+
     function populateSettleTable() {
         let auth_table = document.getElementById('dgAuthorization');
         for (const tr of Array.from(auth_table.children[0].children).slice(1)) {
             let auth_code_td = tr.children[12];
+            auth_code_td.addEventListener("click", copyInformation);
             const auth_code = auth_code_td.innerText;
             if (auth_code) {
                 const token_card = tr.children[7].innerText;
