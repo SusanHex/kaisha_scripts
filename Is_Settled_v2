@@ -22,18 +22,22 @@
         let auth_num = tr.parentElement.children[7].innerText;
         let last_four = auth_num.slice(-4);
         let cc_brand = '';
-        if (auth_num[0] === '6') {
-            cc_brand = 'DS';
+        switch (auth_num[0]) {
+            case '6': 
+                cc_brand = 'DS';
+                break;
+            case '5':
+                cc_brand = 'MC';
+                break;
+            case '4':
+                cc_brand = 'VS';
+                break;
+            case '3':
+                cc_brand = 'AM';
+                break;
+            default:
+                break;
         }
-        else if (auth_num[0] === '5') {
-            cc_brand = 'MC';
-        }
-        else if (auth_num[0] === '4') {
-            cc_brand = 'VS';
-        }
-        else if (auth_num[0] === '3') {
-            cc_brand = 'AM';
-        };
         GM_setClipboard(`${auth_date} ${auth_amount} ${cc_brand}#${last_four}`, 'text', () => console.log('Coppied to clipboard'));
         GM_notification({
             text: `${auth_date} ${auth_amount} ${cc_brand}#${last_four}`,
