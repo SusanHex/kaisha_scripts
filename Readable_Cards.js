@@ -16,7 +16,9 @@
     document.querySelectorAll('td[width=\"10%\"] > span').forEach(elm => {
         if (elm.parentElement.parentElement.childElementCount === 17) {
             elm.innerText = elm.innerText.replace(/.{4}(?=.+)/g, '$&\-');
-            elm.parentElement.nextElementSibling.addEventListener('click', function(e) {
+            let expire_date_td = elm.parentElement.nextElementSibling;
+            expire_date_td.innerText = `${expire_date_td.innerText.slice(-2)}/${expire_date_td.innerText.slice(0,2)}`;
+            expire_date_td.addEventListener('click', function(e) {
                 let el = e.target;
                 let auth_date = el.parentElement.children[12].innerText;
                 let auth_amount = el.parentElement.children[7].innerText;
