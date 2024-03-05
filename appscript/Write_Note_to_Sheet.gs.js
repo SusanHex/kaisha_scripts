@@ -1,3 +1,6 @@
+const SPREADSHEET_URL_KEY = 'Spreadsheet_URL';
+const SHEET_NAME_KEY = 'Sheet_Name';
+
 function getScriptProperty(
     key,
     log_message = null,
@@ -28,12 +31,12 @@ function getScriptProperty(
   
   function onOpen() {
     var ui = DocumentApp.getUi();
-    ui.createMenu("Custom Menu").addItem("Save Note", "saveNote").addToUi();
+    ui.createMenu('Custom Menu').addItem('Save Note', 'saveNote').addToUi();
   }
   
   function saveNote() {
-    const SPREADSHEET_URL = getScriptProperty("Spreadsheet_URL");
-    const SHEET_NAME = getScriptProperty("Sheet_Name");
+    const SPREADSHEET_URL = getScriptProperty(SPREADSHEET_URL_KEY);
+    const SHEET_NAME = getScriptProperty(SHEET_NAME_KEY);
   
     let document = DocumentApp.getActiveDocument().getBody();
     const document_content = document.getText();
@@ -50,5 +53,9 @@ function getScriptProperty(
     spreadsheet.getSheetByName(SHEET_NAME).appendRow([now, document_content]);
     spreadsheet.getSheetByName(SHEET_NAME).autoResizeColumns(1,2);
     DocumentApp.getUi().alert(`Saved note to "${spreadsheet.getName()}"`);
+  }
+
+  function loadLastNote() {
+    let sheet = SpreadsheetApp.openByUrl(getScriptProperty(SPREADSHEET_URL_KEY));
   }
   
