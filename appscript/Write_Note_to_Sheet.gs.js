@@ -99,7 +99,7 @@ function saveAsLastNote() {
   saveNote();
 }
 
-function getNthNote() {
+function loadNthNote() {
   let document = DocumentApp.getActiveDocument();
   const row_choice = DocumentApp.getUi().prompt('Please enter the row of the note');
   const new_content = getNote(row_choice);
