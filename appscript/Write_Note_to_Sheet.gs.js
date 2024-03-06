@@ -3,7 +3,7 @@ function getScriptProperty(
   key,
   log_message = null,
   error_message = null,
-  init_value = ""
+  init_value = ''
 ) {
   let value = PropertiesService.getScriptProperties().getProperty(key);
   if (value === null || value.length === 0) {
@@ -39,17 +39,17 @@ function getSheet() {
     return spreadsheet.getSheetByName(SHEET_NAME);
   } 
   catch(e) {
-    console.error(`Failed to get sheet "${SHEET_NAME}" from spreadsheet at "${SPREADSHEET_URL}"`);
+    console.error(`Failed to get sheet '${SHEET_NAME}' from spreadsheet at '${SPREADSHEET_URL}'`);
     throw e;
   }
 }
 // UI functions
 function onOpen() {
-  var ui = DocumentApp.getUi();
-  ui.createMenu("Note Options")
-    .addItem("Save Note", "saveNote")
-    .addItem("Load Last Note", "loadLastNote")
-    .addItem("Save As Last Note", "saveAsLastNote")
+  let ui = DocumentApp.getUi();
+  ui.createMenu('Note Options')
+    .addItem('Save Note', 'saveNote')
+    .addItem('Load Last Note', 'loadLastNote')
+    .addItem('Save As Last Note', 'saveAsLastNote')
     .addToUi();
 }
 
@@ -58,21 +58,21 @@ function saveNote() {
   const document_content = document.getText();
   if (!document_content) {
     DocumentApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-      .alert("failed to get document contents");
+      .alert('failed to get document contents');
     console.error(
-      `Failed to get contents of "${DocumentApp.getActiveDocument().getName()}"`
+      `Failed to get contents of '${DocumentApp.getActiveDocument().getName()}'`
     );
     return null;
   }
   let sheet = getSheet();
   const now = Utilities.formatDate(
     new Date(),
-    "GMT-7",
-    "yyyy-MM-dd' 'HH:mm:ss"
+    'GMT-7',
+    'yyyy-MM-dd' 'HH:mm:ss'
   );
   sheet.appendRow([now, document_content]);
   sheet.autoResizeColumns(1, 2);
-  DocumentApp.getUi().alert(`Saved note to "${sheet.getName()}"`);
+  DocumentApp.getUi().alert(`Saved note to '${sheet.getName()}'`);
 }
 
 function loadLastNote() {
