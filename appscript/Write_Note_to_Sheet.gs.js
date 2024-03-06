@@ -61,6 +61,7 @@ function onOpen() {
     .addItem('Save Note', 'saveNote')
     .addItem('Load Last Note', 'loadLastNote')
     .addItem('Save As Last Note', 'saveAsLastNote')
+    .addItem('Load Note', 'loadNthNote')
     .addToUi();
 }
 
@@ -96,5 +97,14 @@ function saveAsLastNote() {
   let sheet = getSheet()
   sheet.deleteRow(sheet.getLastRow());
   saveNote();
+}
+
+function getNthNote() {
+  let document = DocumentApp.getActiveDocument();
+  const row_choice = DocumentApp.getUi().prompt('Please enter the row of the note');
+  const new_content = getNote(row_choice);
+  if (new_content) {
+    document.getBody().setText(new_content);
+  }
 }
 
