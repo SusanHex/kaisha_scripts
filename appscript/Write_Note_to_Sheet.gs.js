@@ -101,7 +101,7 @@ function saveAsLastNote() {
 
 function loadNthNote() {
   let document = DocumentApp.getActiveDocument();
-  const row_choice = DocumentApp.getUi().prompt('Please enter the row of the note');
+  const row_choice = Number(DocumentApp.getUi().prompt('Please enter the row of the note').getResponseText());
   const new_content = getNote(row_choice);
   if (new_content) {
     document.getBody().setText(new_content);
