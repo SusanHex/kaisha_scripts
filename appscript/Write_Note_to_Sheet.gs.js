@@ -5,7 +5,7 @@ function getScriptProperty(
     key,
     log_message = null,
     error_message = null,
-    init_value = ""
+    init_value = '"
   ) {
     let value = PropertiesService.getScriptProperties().getProperty(key);
     if (value === null || value.length === 0) {
@@ -46,7 +46,7 @@ function getScriptProperty(
     const document_content = document.getText();
     if (!document_content) {
       DocumentApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
-        .alert("failed to get document contents");
+        .alert('failed to get document contents');
       console.error(
         `Failed to get contents of "${DocumentApp.getActiveDocument().getName()}"`
       );
