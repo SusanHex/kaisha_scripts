@@ -48,7 +48,7 @@ function getNote(row=-1) {
   let sheet = getSheet();
   if (row===-1) {
     return sheet.getRange(sheet.getLastRow(), 2).getValue();
-  } else if (row > 0 && row <= sheet.getLastRow()) {
+  } else if (row > 1 && row <= sheet.getLastRow()) {
     return sheet.getRange(row, 2).getValue();
   } else {
     return null;
@@ -101,7 +101,8 @@ function saveAsLastNote() {
 
 function loadNthNote() {
   let document = DocumentApp.getActiveDocument();
-  const row_choice = Number(DocumentApp.getUi().prompt('Please enter the row of the note').getResponseText());
+  let sheet = getSheet();
+  const row_choice = Number(DocumentApp.getUi().prompt(`Please enter the row of the note from 2 to ${sheet.getLastRow()}`).getResponseText());
   const new_content = getNote(row_choice);
   if (new_content) {
     document.getBody().setText(new_content);
