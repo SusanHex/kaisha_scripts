@@ -5,7 +5,7 @@ function getScriptProperty(
     key,
     log_message = null,
     error_message = null,
-    init_value = '"
+    init_value = ''
   ) {
     let value = PropertiesService.getScriptProperties().getProperty(key);
     if (value === null || value.length === 0) {
