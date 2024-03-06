@@ -106,7 +106,7 @@ function loadNthNote() {
   const new_content = getNote(row_choice);
   if (new_content) {
     document.getBody().setText(new_content);
-    DocumentApp.getUi().alert(`Retrieved note ${row_choice} from ${sheet.getRange(row_choice, 1).getValue}`);
+    DocumentApp.getUi().alert(`Retrieved note ${row_choice} from ${sheet.getRange(row_choice, 1).getValue()}`);
   }
 }
 
