@@ -54,9 +54,6 @@ function onOpen() {
 }
 
 function saveNote() {
-  const SPREADSHEET_URL = getScriptProperty(SPREADSHEET_URL_KEY);
-  const SHEET_NAME = getScriptProperty(SHEET_NAME_KEY);
-
   let document = DocumentApp.getActiveDocument().getBody();
   const document_content = document.getText();
   if (!document_content) {
@@ -67,30 +64,26 @@ function saveNote() {
     );
     return null;
   }
-  let spreadsheet = SpreadsheetApp.openByUrl(SPREADSHEET_URL);
+  let sheet = getSheet();
   const now = Utilities.formatDate(
     new Date(),
     "GMT-7",
     "yyyy-MM-dd' 'HH:mm:ss"
   );
-  spreadsheet.getSheetByName(SHEET_NAME).appendRow([now, document_content]);
-  spreadsheet.getSheetByName(SHEET_NAME).autoResizeColumns(1, 2);
-  DocumentApp.getUi().alert(`Saved note to "${spreadsheet.getName()}"`);
+  sheet.appendRow([now, document_content]);
+  sheet.autoResizeColumns(1, 2);
+  DocumentApp.getUi().alert(`Saved note to "${sheet.getName()}"`);
 }
 
 function loadLastNote() {
   let document = DocumentApp.getActiveDocument();
-  let sheet = SpreadsheetApp.openByUrl(
-    getScriptProperty(SPREADSHEET_URL_KEY)
-  ).getSheetByName(getScriptProperty(SHEET_NAME_KEY));
+  let sheet = getSheet();
   let new_content = sheet.getRange(sheet.getLastRow(), 2).getValue();
   document.getBody().setText(new_content);
 }
 
 function saveAsLastNote() {
-  let sheet = SpreadsheetApp.openByUrl(
-    getScriptProperty(SPREADSHEET_URL_KEY)
-  ).getSheetByName(getScriptProperty(SHEET_NAME_KEY));
+  let sheet = getSheet()
   sheet.deleteRow(sheet.getLastRow());
   saveNote();
 }
