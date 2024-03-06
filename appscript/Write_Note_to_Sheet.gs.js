@@ -43,6 +43,17 @@ function getSheet() {
     throw e;
   }
 }
+
+function getNote(row=-1) {
+  let sheet = getSheet();
+  if (row===-1) {
+    return sheet.getRange(sheet.getLastRow(), 2).getValue();
+  } else if (row > 0 && row <= sheet.getLastRow()) {
+    return sheet.getRange(row, 2).getValue();
+  } else {
+    return null;
+  }
+}
 // UI functions
 function onOpen() {
   let ui = DocumentApp.getUi();
@@ -77,8 +88,7 @@ function saveNote() {
 
 function loadLastNote() {
   let document = DocumentApp.getActiveDocument();
-  let sheet = getSheet();
-  let new_content = sheet.getRange(sheet.getLastRow(), 2).getValue();
+  let new_content = getNote();
   document.getBody().setText(new_content);
 }
 
@@ -87,3 +97,4 @@ function saveAsLastNote() {
   sheet.deleteRow(sheet.getLastRow());
   saveNote();
 }
+
