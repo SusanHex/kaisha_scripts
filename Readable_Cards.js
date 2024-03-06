@@ -13,33 +13,39 @@
 (function() {
     'use strict';
 
-    document.querySelectorAll("td[width=\"10%\"] > span").forEach(elm => {
+    document.querySelectorAll('td[width=\"10%\"] > span').forEach(elm => {
         if (elm.parentElement.parentElement.childElementCount === 17) {
             elm.innerText = elm.innerText.replace(/.{4}(?=.+)/g, '$&\-');
-            elm.parentElement.nextElementSibling.addEventListener("click", function(e) {
+            let expire_date_td = elm.parentElement.nextElementSibling;
+            expire_date_td.innerText = `${expire_date_td.innerText.slice(-2)}/${expire_date_td.innerText.slice(0,2)}`;
+            expire_date_td.addEventListener('click', function(e) {
                 let el = e.target;
                 let auth_date = el.parentElement.children[12].innerText;
                 let auth_amount = el.parentElement.children[7].innerText;
                 let auth_num = el.parentElement.children[5].innerText;
-                auth_num = auth_num.replaceAll("-", "");
+                auth_num = auth_num.replaceAll('-', '');
                 let last_four = auth_num.slice(-4);
-                let cc_brand = "";
-                if (auth_num[0] === "6") {
-                    cc_brand = "DS";
+                let cc_brand = '';
+                switch (auth_num[0]) {
+                    case '6': 
+                        cc_brand = 'DS';
+                        break;
+                    case '5':
+                        cc_brand = 'MC';
+                        break;
+                    case '4':
+                        cc_brand = 'VS';
+                        break;
+                    case '3':
+                        cc_brand = 'AM';
+                        break;
+                    default:
+                        break;
                 }
-                else if (auth_num[0] === "5") {
-                    cc_brand = "MC";
-                }
-                else if (auth_num[0] === "4") {
-                    cc_brand = "VS";
-                }
-                else if (auth_num[0] === "3") {
-                    cc_brand = "AM";
-                };
-                GM_setClipboard(`${auth_date} \$${auth_amount} ${cc_brand}#${last_four}`, "text", () => console.log("Coppied to clipboard"));
+                GM_setClipboard(`${auth_date} \$${auth_amount} ${cc_brand}#${last_four}`, 'text', () => console.log('Coppied to clipboard'));
                 GM_notification({
                     text: `${auth_date} \$${auth_amount} ${cc_brand}#${last_four}`,
-                    title: "Copied",
+                    title: 'Copied',
                     },
                 );
             });
