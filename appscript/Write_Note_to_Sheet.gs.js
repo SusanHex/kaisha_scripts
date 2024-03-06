@@ -1,6 +1,3 @@
-const SPREADSHEET_URL_KEY = "Spreadsheet_URL";
-const SHEET_NAME_KEY = "Sheet_Name";
-
 // Helper functions
 function getScriptProperty(
   key,
@@ -30,6 +27,22 @@ function getScriptProperty(
   return value;
 }
 
+function getSheet() {
+  const SPREADSHEET_URL_KEY = 'Spreadsheet_URL';
+  const SHEET_NAME_KEY = 'Sheet_Name';
+  const SPREADSHEET_URL = getScriptProperty(SPREADSHEET_URL_KEY);
+  const SHEET_NAME = getScriptProperty(SHEET_NAME_KEY);
+  let spreadsheet = null;
+
+  try {
+    spreadsheet = SpreadsheetApp.openByUrl(SPREADSHEET_URL);
+    return spreadsheet.getSheetByName(SHEET_NAME);
+  } 
+  catch(e) {
+    console.error(`Failed to get sheet "${SHEET_NAME}" from spreadsheet at "${SPREADSHEET_URL}"`);
+    throw e;
+  }
+}
 // UI functions
 function onOpen() {
   var ui = DocumentApp.getUi();
