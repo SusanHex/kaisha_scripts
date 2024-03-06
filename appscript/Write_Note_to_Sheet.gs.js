@@ -68,7 +68,7 @@ function saveNote() {
   const now = Utilities.formatDate(
     new Date(),
     'GMT-7',
-    'yyyy-MM-dd' 'HH:mm:ss'
+    "yyyy-MM-dd' 'HH:mm:ss"
   );
   sheet.appendRow([now, document_content]);
   sheet.autoResizeColumns(1, 2);
