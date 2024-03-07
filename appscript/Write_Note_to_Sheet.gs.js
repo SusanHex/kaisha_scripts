@@ -85,6 +85,8 @@ function saveNote() {
   sheet.appendRow([now, document_content]);
   sheet.autoResizeColumns(1, 2);
   DocumentApp.getUi().alert(`Saved note to '${sheet.getName()}'`);
+  document.setText('');
+
 }
 
 function loadLastNote() {
