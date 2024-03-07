@@ -54,6 +54,16 @@ function getNote(row=-1) {
     return null;
   }
 }
+
+function getDocument() {
+  try {
+    return DocumentApp.getActiveDocument();
+  }
+  catch (e) {
+    console.error('Failed to get document');
+    throw e;
+  }
+}
 // UI functions
 function onOpen() {
   let ui = DocumentApp.getUi();
