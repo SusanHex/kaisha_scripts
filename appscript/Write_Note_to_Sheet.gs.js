@@ -76,13 +76,13 @@ function onOpen() {
 }
 
 function saveNote() {
-  let document = DocumentApp.getActiveDocument().getBody();
+  let document = getDocument().getBody();
   const document_content = document.getText();
   if (!document_content) {
     DocumentApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
       .alert('failed to get document contents');
     console.error(
-      `Failed to get contents of '${DocumentApp.getActiveDocument().getName()}'`
+      `Failed to get contents of '${getDocument().getName()}'`
     );
     return null;
   }
@@ -100,7 +100,7 @@ function saveNote() {
 }
 
 function loadLastNote() {
-  let document = DocumentApp.getActiveDocument();
+  let document = getDocument();
   let new_content = getNote();
   document.getBody().setText(new_content);
 }
@@ -112,7 +112,7 @@ function saveAsLastNote() {
 }
 
 function loadNthNote() {
-  let document = DocumentApp.getActiveDocument();
+  let document = getDocument();
   let sheet = getSheet();
   const row_choice = Number(DocumentApp.getUi().prompt(`Please enter the row of the note from 2 to ${sheet.getLastRow()}`).getResponseText());
   const new_content = getNote(row_choice);
