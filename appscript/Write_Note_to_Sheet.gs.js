@@ -124,7 +124,7 @@ function loadNthNote() {
 }
 // Tool UI functions
 function generateClosurePreamble() {
-  const closure_preamble_pattern = /(\w+)\s(\w+)\s\/\/\s([\w\s]+)/g;
+  const closure_preamble_pattern = /(\w+)\s(\w+)\s\/\/\s([\w ]+)/;
   let document = getDocument();
   const document_content = document.getText();
   let full_match, first_name, last_name, position;
