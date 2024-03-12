@@ -37,16 +37,17 @@ function getSheet() {
   try {
     spreadsheet = SpreadsheetApp.openByUrl(SPREADSHEET_URL);
     return spreadsheet.getSheetByName(SHEET_NAME);
-  } 
-  catch(e) {
-    console.error(`Failed to get sheet '${SHEET_NAME}' from spreadsheet at '${SPREADSHEET_URL}'`);
+  } catch (e) {
+    console.error(
+      `Failed to get sheet '${SHEET_NAME}' from spreadsheet at '${SPREADSHEET_URL}'`
+    );
     throw e;
   }
 }
 
-function getNote(row=-1) {
+function getNote(row = -1) {
   let sheet = getSheet();
-  if (row===-1) {
+  if (row === -1) {
     return sheet.getRange(sheet.getLastRow(), 2).getValue();
   } else if (row > 1 && row <= sheet.getLastRow()) {
     return sheet.getRange(row, 2).getValue();
@@ -58,8 +59,7 @@ function getNote(row=-1) {
 function getDocument() {
   try {
     return DocumentApp.getActiveDocument();
-  }
-  catch (e) {
+  } catch (e) {
     console.error('Failed to get document');
     throw e;
   }
@@ -82,9 +82,7 @@ function saveNote() {
   if (!document_content) {
     DocumentApp.getUi() // Or DocumentApp, SlidesApp or FormApp.
       .alert('failed to get document contents');
-    console.error(
-      `Failed to get contents of '${getDocument().getName()}'`
-    );
+    console.error(`Failed to get contents of '${getDocument().getName()}'`);
     return null;
   }
   let sheet = getSheet();
@@ -97,7 +95,6 @@ function saveNote() {
   sheet.autoResizeColumns(1, 2);
   DocumentApp.getUi().alert(`Saved note to '${sheet.getName()}'`);
   document.setText('');
-
 }
 
 function loadLastNote() {
@@ -107,7 +104,7 @@ function loadLastNote() {
 }
 
 function saveAsLastNote() {
-  let sheet = getSheet()
+  let sheet = getSheet();
   sheet.deleteRow(sheet.getLastRow());
   saveNote();
 }
@@ -115,11 +112,21 @@ function saveAsLastNote() {
 function loadNthNote() {
   let document = getDocument();
   let sheet = getSheet();
-  const row_choice = Number(DocumentApp.getUi().prompt(`Please enter the row of the note from 2 to ${sheet.getLastRow()}`).getResponseText());
+  const row_choice = Number(
+    DocumentApp.getUi()
+      .prompt(
+        `Please enter the row of the note from 2 to ${sheet.getLastRow()}`
+      )
+      .getResponseText()
+  );
   const new_content = getNote(row_choice);
   if (new_content) {
     document.getBody().setText(new_content);
-    DocumentApp.getUi().alert(`Retrieved note ${row_choice} from ${sheet.getRange(row_choice, 1).getValue()}`);
+    DocumentApp.getUi().alert(
+      `Retrieved note ${row_choice} from ${sheet
+        .getRange(row_choice, 1)
+        .getValue()}`
+    );
   }
 }
 // Tool UI functions
@@ -128,11 +135,11 @@ function generateClosurePreamble() {
   let document = getDocument();
   const document_content = document.getText();
   let full_match, first_name, last_name, position;
-  const match_result =  closure_preamble_pattern.exec(document_content);
+  const match_result = closure_preamble_pattern.exec(document_content);
   if (match_result) {
     [full_match, first_name, last_name, position] = match_result;
     console.log(`Pattern matched to this text "${full_match}"`);
     const closure_preamble = `${first_name}, ${last_name}, ${position.trim()}, verified as authorized`;
-    document.setText(document_content+'\n'+closure_preamble);
+    document.setText(document_content + '\n' + closure_preamble);
   }
 }
