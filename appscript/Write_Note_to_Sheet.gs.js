@@ -72,6 +72,7 @@ function onOpen() {
     .addItem('Load Last Note', 'loadLastNote')
     .addItem('Save As Last Note', 'saveAsLastNote')
     .addItem('Load Note', 'loadNthNote')
+    .addItem('Create Closure Text', 'generateClosurePreamble')
     .addToUi();
 }
 
@@ -121,13 +122,17 @@ function loadNthNote() {
     DocumentApp.getUi().alert(`Retrieved note ${row_choice} from ${sheet.getRange(row_choice, 1).getValue()}`);
   }
 }
-
 // Tool UI functions
-
 function generateClosurePreamble() {
-  const closure_preamble_pattern = /(\w+)\s(\w+)\s\/\/\s(\w+)/g;
+  const closure_preamble_pattern = /(\w+)\s(\w+)\s\/\/\s([\w\s]+)/g;
   let document = getDocument();
   const document_content = document.getText();
-  // const first_name, last_name, positon = document_content.match(closure_preamble_pattern)
-  
+  let full_match, first_name, last_name, position;
+  const match_result =  closure_preamble_pattern.exec(document_content);
+  if (match_result) {
+    [full_match, first_name, last_name, position] = match_result;
+    console.log(`Pattern matched to this text "${full_match}"`);
+    const closure_preamble = `${first_name}, ${last_name}, ${position.trim()}, verified as authorized`;
+    document.setText(document_content+'\n'+closure_preamble);
+  }
 }
