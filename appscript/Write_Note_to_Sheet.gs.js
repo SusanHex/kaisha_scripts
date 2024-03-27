@@ -92,8 +92,8 @@ function saveNote() {
     "yyyy-MM-dd' 'HH:mm:ss"
   );
   sheet.appendRow([now, document_content]);
-  sheet.autoResizeColumns(1, 2);
-  DocumentApp.getUi().alert(`Saved note to '${sheet.getName()}'`);
+  sheet.autoResizeColumns(1);
+  // DocumentApp.getUi().alert(`Saved note to '${sheet.getName()}'`);
   document.setText('');
 }
 
