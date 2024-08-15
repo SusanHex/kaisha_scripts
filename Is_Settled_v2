@@ -46,6 +46,17 @@
         );
     }
 
+    function isReversed(page_document, approval_code) {
+        let page = (new DOMParser()).parseFromString(page_document, 'text/html');
+        const auth_table = Array.from(page.getElementById("dgAuthorizations").children[0].children).slice(1);
+        for (const tr of auth_table) {
+            if (tr.children[1].innerText === 'REV' && tr.children[10].innerText === approval_code) {
+                return true;
+            } 
+        }
+        return false;
+    }
+
     function populateSettleTable() {
         let auth_table = document.getElementById('dgAuthorization');
         for (const tr of Array.from(auth_table.children[0].children).slice(1)) {
@@ -79,8 +90,12 @@
         const token_card = page_data.match(/(?<=detailSelectedCard\=)(\d+\.+\d+)/)[0];
         console.log(token_card)
         const page = page_data.slice(page_data.indexOf('Transactions'), page_data.indexOf('Authorizations'));
+        
         for (const approval_code of Object.keys(SETTLE_TABLE[token_card])) {
-            if (page.includes(approval_code)) {
+            if (isReversed(page_data, approval_code)) {
+                SETTLE_TABLE[token_card][approval_code].style.backgroundColor = 'Yellow';
+                SETTLE_TABLE[token_card][approval_code].innerText += '!';
+            } else if (page.includes(approval_code)) {
                 SETTLE_TABLE[token_card][approval_code].style.backgroundColor = 'Green';
             } else {
                 SETTLE_TABLE[token_card][approval_code].style.backgroundColor = 'Red';
