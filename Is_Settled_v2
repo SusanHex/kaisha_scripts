@@ -65,12 +65,14 @@
             const auth_code = auth_code_td.innerText;
             if (auth_code) {
                 const token_card = tr.children[7].innerText;
-                if(Object.keys(SETTLE_TABLE).includes(token_card)) {
-                    Object.assign(SETTLE_TABLE[token_card], {[auth_code]: auth_code_td});
-                } else {
-                    Object.assign(SETTLE_TABLE, {[token_card]: {
-                        [auth_code]: auth_code_td,
-                    }});
+                if (tr.children[1].innerText === 'AUTH') {
+                    if(Object.keys(SETTLE_TABLE).includes(token_card)) {
+                        Object.assign(SETTLE_TABLE[token_card], {[auth_code]: auth_code_td});
+                    } else {
+                        Object.assign(SETTLE_TABLE, {[token_card]: {
+                            [auth_code]: auth_code_td,
+                        }});
+                    }
                 }
             }
         }
