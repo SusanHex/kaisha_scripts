@@ -11,8 +11,16 @@
 
 (function () {
   'use strict';
-  const button_list = document.querySelector("#navMenu > ul:nth-child(2) > li:nth-child(1) > ul > li > ul");
-  for (const button of button_list.children) {
-    button.setAttribute('onclick', button.onclick.toString().replace('doAppSubmit', 'doAppSubmitNoPopUp'));
-  }
+  const nav_menu = document.getElementById('navMenu')
+  const express_element = document.createElement('button');
+  const capture_element = document.createElement('button');
+  
+  express_element.innerText = 'Express';
+  express_element.setAttribute('onclick', "doAppSubmitNoPopUp('1','/spmod/login.do');");
+
+  capture_element.innerText = 'Capture';
+  capture_element.setAttribute('onclick', "doAppSubmitNoPopUp('4','/ac/login.do');");
+
+  nav_menu.append(express_element);
+  nav_menu.append(capture_element);
 })();
