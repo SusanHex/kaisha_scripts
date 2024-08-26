@@ -11,7 +11,7 @@
 
 (function () {
   'use strict';
-  const button_list = document.querySelector("#navMenu > ul:nth-child(2) > li:nth-child(1) > ul > li > ul")
+  const button_list = document.querySelector("#navMenu > ul:nth-child(2) > li:nth-child(1) > ul > li > ul");
   for (const button of button_list.children) {
     button.setAttribute('onclick', button.onclick.toString().replace('doAppSubmit', 'doAppSubmitNoPopUp'));
   }
