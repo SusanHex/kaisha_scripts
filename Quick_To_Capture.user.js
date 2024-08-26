@@ -11,9 +11,8 @@
 
 (function () {
   'use strict';
-  appSubmitForm.appid.value = '4';
-  appSubmitForm.targetPage.value = '';
-  appSubmitForm.url.value = '/ac/login.do';
-  appSubmitForm.target = '';
-  appSubmitForm.submit();
+  const button_list = document.querySelector("#navMenu > ul:nth-child(2) > li:nth-child(1) > ul > li > ul")
+  for (const button of button_list.children) {
+    button.setAttribute('onclick', button.onclick.toString().replace('doAppSubmit', 'doAppSubmitNoPopUp'));
+  }
 })();
