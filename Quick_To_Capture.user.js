@@ -16,7 +16,7 @@
   const capture_element = document.createElement('button');
   
   express_element.innerText = 'Express';
-  express_element.setAttribute('onclick', "doAppSubmitNoPopUp('1','/spmod/login.do');");
+  express_element.setAttribute('onclick', "doAppSubmitNoPopUp('1','/spmod/login.x');");
 
   capture_element.innerText = 'Capture';
   capture_element.setAttribute('onclick', "doAppSubmitNoPopUp('4','/ac/login.do');");
